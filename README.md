@@ -1,8 +1,8 @@
-# Simple-Music-Recommender-System
+# COMP4135 Group Project
 
-## Installation
+## Build Env
 ```
-sudo pip install -r requirements.txt
+conda create --name rs python=3.6
 ```
 
 ## Usage
