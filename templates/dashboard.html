@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<script>
+function play(url, boolean) {
+  if (boolean) {
+    document.getElementById("iframe").src = url; // Change url of widget
+  }
+}
+</script>
+
+<!-- 让左边的导航栏固定 -->
+<style type ="text/css" >
+  .nav{ 
+    position: fixed;      
+    top: 85px; 
+    width: 15%;
+  }  
+</style>
+
+
+<!-- 左边的导航栏-->
+<div class="row">
+  <!-- For the tabs -->
+  <div class="col-2">
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <!-- Anime-->
+      <a class="nav-link active" id="v-pills-songs-tab" data-toggle="pill" href="#v-pills-items" role="tab" aria-controls="v-pills-songs" aria-selected="false">Animes</a>
+
+      <!-- Popularity recommender system tab -->
+      <a class="nav-link" id="v-pills-pop-rec-tab" data-toggle="pill" href="#v-pills-pop-rec" role="tab" aria-controls="v-pills-pop-rec" aria-selected="false">Popularity Recommender System</a>
+
+      <!-- History tab -->
+      <a class="nav-link" id="v-pills-history-tab" data-toggle="pill" href="#v-pills-other" role="tab" aria-controls="v-pills-history" aria-selected="false">Other Methods</a>
+      <!-- About tab -->
+      <a class="nav-link" id="v-pills-about-tab" data-toggle="pill" href="#v-pills-about" role="tab" aria-controls="v-pills-about" aria-selected="false">About</a>
+    </div>
+  </div>
+
+  <!-- For the content -->
+  <div class="col-9">
+    <div class="tab-content" id="v-pills-tabContent">
+      <!-- Anime信息 -->
+      <div class="tab-pane fade show active" id="v-pills-items" role="tabpanel" aria-labelledby="v-pills-songs-tab">
+      	{% include 'item.html' %}
+      </div>
+
+      <!-- Popularity recommender system content -->
+      <div class="tab-pane fade" id="v-pills-pop-rec" role="tabpanel" aria-labelledby="v-pills-pop-rec-tab">
+        {% include 'pop_recommend.html' %}
+      </div>
+
+      <!-- 其他方法可以添加到这里 -->
+      <div class="tab-pane fade" id="v-pills-other" role="tabpanel" aria-labelledby="v-pills-history-tab">
+        {% include 'other.html' %}
+      </div>
+
+      <!-- 组员介绍-->
+      <div class="tab-pane fade" id="v-pills-about" role="tabpanel" aria-labelledby="v-pills-about-tab">
+      	{% include 'about.html' %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Set encoding -->
+    <meta charset="utf-8"> 
+
+    <!-- Set title of webpage (title of tab) -->
+    <title>COMP4135</title>
+
+    <!-- Dynamically link the css file  -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- For displaying icons (see https://useiconic.com/open/) -->
+    <link href="{{ url_for('static', filename='css/open-iconic-bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Add jquery for modals -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+    <!-- Dynamically link javascript bootstrap -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+  </head>
+
+  <header>
+    {% include 'navbar.html' %}
+  </header>
+
+  <body>
+
+    <div class="container-fluid">
+      {% block body %}{% endblock %}
+    </div>
+
+  </body>
+
+</html>
