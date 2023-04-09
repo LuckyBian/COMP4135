@@ -17,10 +17,12 @@ pip install pandas
 pip install numpy
 ```
 
-
-
-## Usage
+## Start
 ```
 python app.py
 ```
-Go to `http://127.0.0.1:5000/` on your browser.
+
+## Web Content: Copy the URL below and paste it into your browser to open
+'''
+http://127.0.0.1:5000/
+'''
