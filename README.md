@@ -4,7 +4,6 @@
 ```
 conda create --name rs python=3.6
 virtualenv flask
-cd flask
 ```
 ## Activate the Enviroment
 ```
@@ -17,6 +16,7 @@ pip install Flask
 pip install Flask-Table
 pip install pandas
 pip install numpy
+pip install flask
 ```
 
 ## Start
