@@ -1,4 +1,0 @@
-Flask
-Flask-Table
-pandas
-numpy
