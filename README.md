@@ -3,6 +3,8 @@
 ## Build Enviroment
 ```
 conda create --name rs python=3.6
+virtualenv flask
+cd flask
 ```
 ## Activate the Enviroment
 ```
