@@ -21,6 +21,7 @@ pip install flask
 
 ## Start
 ```
+python load_data.py
 python app.py
 ```
 
