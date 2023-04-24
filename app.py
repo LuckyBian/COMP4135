@@ -9,9 +9,35 @@ from flask import jsonify
 import os
 import sys
 import subprocess
+import sys
+import random
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
+def load_data_and_models():
+    # Load database
+    df = load_data('data1.pkl')
+    df2 = load_data('data2.pkl')
+    data = {'df': df, 'df2': df2}
+
+    # Load recommendation models
+    pop_model = R.popularity_recommender_py()
+    pop_model.create(df, 'user_id', 'title')
+    pop_rec = pop_model.recommend(df.iloc[0]['user_id'])
+
+    is_model = R.item_similarity_recommender_py(df, 'user_id', 'title')
+
+    user_sim_model = R.user_similarity_recommender_py()
+    user_sim_model.create(df, 'user_id', 'title', df2)
+
+    # Store models in a dictionary
+    models = {'pop': pop_rec, 'item': is_model, 'user_sim': user_sim_model}
+
+    return data, models
+
+
+def restart_script():
+    os.execv(sys.executable, ['python'] + sys.argv)
 
 # Functions for loading and saving data
 def load_data(filename):
@@ -23,26 +49,24 @@ def save_data(filename, data):
     with open(filename, 'wb') as f:
         pickle.dump(data, f)
 
-def combined_recommendations(user_id, pop_model, item_similarity_model, alpha=0.5):
-    # Get the popularity-based recommendations
-    pop_recs = pop_model
+import random
 
-    # Get the item similarity-based recommendations
+import random
+import pandas as pd
+
+def combined_recommendations(user_id, item_similarity_model):
+    # Get the recommendations from item similarity model
     item_sim_recs = item_similarity_model.recommend(user_id)
-    print("Type of item_sim_recs:", type(item_sim_recs))
+    
+    if isinstance(item_sim_recs, pd.DataFrame):
+        # Shuffle the items
+        shuffled_recs = item_sim_recs.sample(frac=1).reset_index(drop=True)
+    else:
+        # Handle the case when item_sim_recs is not a DataFrame
+        print(f"Unexpected type for item_sim_recs: {type(item_sim_recs)}")
+        shuffled_recs = pd.DataFrame()
 
-    # Combine the two recommendation sets
-    pop_recs['score'] = pop_recs['score'] * alpha
-    item_sim_recs['score'] = item_sim_recs['score'] * (1 - alpha)
-
-    combined_recs = pd.concat([pop_recs, item_sim_recs])
-    combined_recs = combined_recs.groupby('title', as_index=False)['score'].sum()
-
-    # Sort the recommendations by score and reset the index
-    combined_recs = combined_recs.sort_values('score', ascending=False).reset_index(drop=True)
-
-    return combined_recs
-
+    return shuffled_recs
 
 
 
@@ -72,7 +96,11 @@ def question2(user_id):
 
         # Save the updated data2_df to data2.pkl
         data2_df.to_pickle('data2.pkl')
-        pyautogui.hotkey('command', 's')
+
+        global data, models
+        data, models = load_data_and_models()
+        
+        #pyautogui.hotkey('command', 's')
 
         return redirect(url_for('index'))
 
@@ -173,20 +201,21 @@ def dashboard():
 
             return jsonify(success=True)
         
-    #combined_rec = combined_recommendations(user_id, models['pop'], models['item'], alpha=0.5)
+    #item_sim_recs = models['item'].recommend(user_id)
+    combined_rec = combined_recommendations(user_id, models['item'])
 
-        
+     
     return render_template('dashboard.html', 
-                           df=data['df'],
-                           df2=data['df2'], 
-                           user_id=user_id, 
-                           history=data['history'],
-                           pop_model=models['pop'],
-                           is_model=models['item'],
-                           user_sim_model=models['user_sim'],
-                           #combined_rec=combined_rec, 
-                           login=False,
-                           url_link=url_link)
+                       df=data['df'],
+                       df2=data['df2'], 
+                       user_id=user_id, 
+                       history=data['history'],
+                       pop_model=models['pop'],
+                       is_model=models['item'],
+                       user_sim_model=models['user_sim'],
+                       combined_rec=combined_rec, 
+                       login=False,
+                       url_link=url_link)
 
 if __name__ == "__main__":
     # Load database
@@ -194,11 +223,6 @@ if __name__ == "__main__":
     df2 = load_data('data2.pkl')
     data = {'df': df,'df2':df2}
     user_id = None
-
-
-    #print(df2.info())
-    #print(df.info())
-    #print(df2.head(1))
 
 
     # Default URL
@@ -217,6 +241,8 @@ if __name__ == "__main__":
 
     # Store models in a dictionary
     models = {'pop': pop_rec, 'item': is_model, 'user_sim': user_sim_model}
+
+    data, models = load_data_and_models()
 
     app.run(debug=True)
 
