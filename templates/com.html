@@ -1,0 +1,23 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+<div class="container">
+  <h3>Combined Recommendations</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Rank</th>
+        <th scope="col">Title</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for index, row in combined_rec.iterrows() %}
+        <tr>
+          <th scope="row">{{ loop.index }}</th>
+          <td>{{ row['title'] }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

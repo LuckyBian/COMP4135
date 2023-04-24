@@ -11,7 +11,11 @@
     <!-- 添加登陆方式 -->
     <ul class="navbar-nav navbar-right">
 
-      <!-- Button-->
+      <button style="margin-right: 20px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#registerModal">
+        Register
+      </button>
+
+      <!--Login Button-->
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> 
 
         <!-- Change depending if logged in/out -->
@@ -22,12 +26,43 @@
         {% endif %}
       </button>
 
+
+      <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="registerModalLabel">Register</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- Registration form -->
+              <form action="{{ url_for('register') }}" method="post">
+                {% set max = df.drop_duplicates(subset='user_id')|length %}
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input type="text" class="form-control" id="username" name="username" value="{{max + 1}}" placeholder="Enter username" readonly="readonly" required>
+                </div>
+                <div class="form-group">
+                  <label for="num_questions">Number of questions:</label>
+                  <input type="number" id="num_questions" name="num_questions" min="5" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+              COMP4135
+            </div>
+          </div>
+        </div>
+      </div>
+
+
       <!-- 登陆界面 -->
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-
-
 
             <div class="modal-header">
               <!--登陆界面文字显示-->
@@ -38,8 +73,6 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-
-
 
             <div class="modal-body">
               <div class="container-fluid">

@@ -1,6 +1,6 @@
 
 <h2> 
-  Top Recommended Animes 
+  Top 10 Recommended Animes 
   <span style="float:right;"> 
     User ID: {{ user_id }}
   </span> 
@@ -20,8 +20,8 @@
         {% for i, row in rec.iterrows() %}
         <tr> 
           <td>{{ row['rank']|int }}</td>
-          <td>{{ row['song'] }}</td>
-          <td>{{ row['score'] }}</td>
+          <td>{{ row['anime'] }}</td>
+          <td>{{ (row['score']*100) // 1 }}</td>
         </tr>
       {% endfor %}
     </table>

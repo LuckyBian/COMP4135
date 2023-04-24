@@ -1,28 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anime List</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
 
-<h2> 
+<h2>
   Anime List
-  <span style="float:right;"> 
+  <span style="float:right;">
     User ID: {{ user_id }}
-  </span> 
+  </span>
 </h2>
 
 <div class="table-responsive" style="width:100%; height:50%; ">
   <table class="table table-hover">
     <thead class="thead-light">
       <tr>
-        <th width="50%">Anime</th>
-        <th width="25%">Episodes</th>
-        <th width="25%">Genre</th>
+        <th width="40%">Anime</th>
+        <th width="20%">Episodes</th>
+        <th width="20%">Genre</th>
+        <th width="20%">Like</th>
       </tr>
     </thead>
     <!-- Get rid of duplicates -->
     {% set df_clean = df.drop_duplicates(subset='title') %}
     {% for i in range(df_clean['title']|length) %}
-      <tr> 
+      <tr>
         <td>{{ df_clean.iloc[i]['title'] }}</td>
         <td>{{ df_clean.iloc[i]['duration']|int}}</td>
         <td>{{ df_clean.iloc[i]['genre'] }} </td>
+        <td><button class="btn btn-primary like-button" data-title="{{ df_clean.iloc[i]['title'] }}" data-index="{{ i }}">Like</button></td>
       </tr>
     {% endfor %}
   </table>
 </div>
+
+<script>
+  $(".like-button").on("click", function() {
+    const title = $(this).data("title");
+    const index = $(this).data("index");
+
+    // AJAX request to server to store the liked anime in data.pkl
+    $.ajax({
+      type: "POST",
+      url: "/dashboard/",
+      data: {
+        "like_anime": "true",
+        "title": title,
+        "user_id": "{{ user_id }}",
+      },
+      success: function(response) {
+        if (response.success) {
+          // Update the button text and disable it to show it's liked
+          $(`.like-button[data-index=${index}]`).text("Liked").prop("disabled", true);
+        } else {
+          alert("Error: Could not like anime.");
+        }
+      },
+      error: function() {
+        alert("Error: Could not like anime.");
+      }
+    });
+  });
+</script>
