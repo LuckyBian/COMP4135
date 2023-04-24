@@ -17,6 +17,7 @@ pip install Flask-Table
 pip install pandas
 pip install numpy
 pip install flask
+pip install scikit-learn
 ```
 
 ## Start
