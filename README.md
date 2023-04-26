@@ -1,5 +1,14 @@
 # COMP4135 Group Project
 
+## Load Data
+### If you want to use you own data
+Please edit two Excel file the the code, dan then type;
+```
+python load_data.py
+```
+### If you want to use the data from our team
+The data is save in data1.pkl and data2.pkl.
+
 ## Build Enviroment
 ```
 conda create --name rs python=3.6
