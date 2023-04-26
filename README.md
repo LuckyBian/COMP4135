@@ -2,7 +2,7 @@
 
 ## Load Data
 ### If you want to use you own data
-Please edit two Excel file the the code, dan then type;
+Please edit two Excel file in the code, dan then type;
 ```
 python load_data.py
 ```
