@@ -28,6 +28,7 @@ pip install numpy
 pip install flask
 pip install scikit-learn
 pip install pyautogui
+pip install xlrd
 ```
 
 ## Start
