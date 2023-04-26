@@ -33,7 +33,6 @@ pip install xlrd
 
 ## Start
 ```
-python load_data.py
 python app.py
 ```
 
